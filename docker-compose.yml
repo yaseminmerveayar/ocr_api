@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ocr_fastapi
+    command:
+      [
+        "poetry",
+        "run",
+        "uvicorn",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+        "ocr_app.main:app",
+        "--reload",
+      ]
+    ports:
+      - 8000:8000
+

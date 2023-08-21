@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "ocr-app"
+version = "0.1.0"
+description = ""
+authors = ["Yasemin Merve Ayar <yaseminmerve.ayar@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pytesseract = "^0.3.10"
+pillow = "^10.0.0"
+fastapi = "^0.101.1"
+uvicorn = "^0.23.2"
+opencv-python = "^4.8.0.76"
+python-multipart = "^0.0.6"
+imutils = "^0.5.4"
+validators = "^0.21.2"
+mypy = "^1.5.1"
+pre-commit = "^3.3.3"
+asyncio = "^3.4.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
