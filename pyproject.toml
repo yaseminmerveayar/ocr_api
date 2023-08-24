@@ -18,6 +18,10 @@ validators = "^0.21.2"
 mypy = "^1.5.1"
 pre-commit = "^3.3.3"
 asyncio = "^3.4.3"
+redis = "^5.0.0"
+pytest = "^7.4.0"
+pytest-asyncio = "^0.21.1"
+dateparser = "^1.1.8"
 
 
 [build-system]

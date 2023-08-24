@@ -5,7 +5,10 @@ from PIL import Image
 import numpy as np
 import cv2
 import io
-from ocr_app.parsing import credit_card, hash, parse
+from ocr_app.parsing import parse
+import redis
+import hashlib
+import json
 
 router = APIRouter(
     prefix="/api/v1/ocr",
@@ -13,27 +16,57 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
+redis_client = redis.Redis(host="cache", port=6379, db=0)
+
 
 @router.post("/file")
 async def read_user(file: UploadFile = File(...)):
-    try:
-
-        img = Image.open(io.BytesIO(file.file.read()))
-
-        image_np = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-
-        gray_img = cv2.cvtColor(image_np, cv2.COLOR_BGR2GRAY)
-
-        pytesseract_result = pytesseract.image_to_string(gray_img)
-
-        result: list = await parse.parse_text(pytesseract_result)
-
-        if pytesseract_result is None:
-            return JSONResponse(content={"content": None}, status_code=204)
-
+    if not is_valid_image(file.content_type):
         return JSONResponse(
-            content={"content": pytesseract_result, "findings": result}, status_code=200
+            content={"status": "bad request. wrong file format."}, status_code=400
         )
 
-    except Exception as e:
-        return JSONResponse(content={"error": str(e)}, status_code=500)
+    img = Image.open(io.BytesIO(file.file.read()))
+    img_bytes = img.tobytes()
+    file_hash = hashlib.sha256(img_bytes).hexdigest()
+
+    cache: json = redis_client.get(file_hash)
+    if cache:
+        cache_data = json.loads(cache.decode("utf-8"))
+        return JSONResponse(content=cache_data, status_code=200)
+
+    else:
+        pytesseract_result = pytesseract.image_to_string(img)
+        cleaned_response: str = (
+            pytesseract_result.replace("\n", "")
+            .replace("\t", "")
+            .replace("\r", "")
+            .replace("\f", "")
+        )
+        if not cleaned_response:
+            return JSONResponse(content=None, status_code=204)
+        else:
+            findings: list = await parse.parse_text(pytesseract_result)
+            result = {
+                "content": pytesseract_result,
+                "status": "successfull",
+                "findings": findings,
+            }
+
+            json_result = json.dumps(result)
+            redis_client.set(file_hash, json_result, ex=1 * 3600)
+
+            return JSONResponse(content=result, status_code=200)
+
+
+def is_valid_image(content_type):
+    valid_image_types = [
+        "image/jpeg",
+        "image/png",
+        "image/gif",
+        "image/avif",
+        "image/apng",
+        "image/svg+xml",
+        "image/webp",
+    ]
+    return content_type in valid_image_types
