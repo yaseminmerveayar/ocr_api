@@ -5,7 +5,7 @@ async def parse_credit_card(text: str):
     pattern = r"(?:\d{4}-){3}\d{4}|\d{16}"
     matches: list = re.findall(pattern, text)
 
-    cards = []
+    cards = set()
 
     if matches:
         for card_number in matches:
@@ -13,15 +13,12 @@ async def parse_credit_card(text: str):
             card_number = card_number.replace(" ", "")
 
             if await luhn_check(card_number):
-                cards.append(
-                    {"value": card_number, "type": "credit_card", "is_valid": True}
-                )
-            else:
-                cards.append(
-                    {"value": card_number, "type": "credit_card", "is_valid": False}
-                )
+                cards.add(card_number)
 
-    return cards
+    cards_list = list(cards)  # Set'i liste olarak çeviriyoruz
+
+    cards_data = [{"value": card, "type": "CREDIT_CARD_NUMBER"} for card in cards_list]
+    return cards_data
 
 
 async def luhn_check(card_number):

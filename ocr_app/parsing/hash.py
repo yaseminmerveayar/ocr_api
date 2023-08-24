@@ -1,5 +1,4 @@
 import re
-import validators
 
 
 async def parse_hash(text: str):
@@ -10,13 +9,11 @@ async def parse_hash(text: str):
         "sha512": r"(?<!\w)[a-f\d]{128}(?!\w)",
     }
 
-    hashes = []
+    hashes = set()
     for format in regex_list.keys():
         matches = re.findall(regex_list[format], text)
-
+        print(matches)
         if matches:
-            for hash in matches:
-                if validators.hashes(hash):
-                    hashes.append({"value": hash, "type": format + "- hash"})
+            hashes.update(matches)
 
-    return hashes
+    return [{"value": hash, "type": "HASH"} for hash in hashes]

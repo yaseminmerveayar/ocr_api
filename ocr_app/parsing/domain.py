@@ -5,10 +5,13 @@ import validators
 async def parse_domain(text: str):
     pattern = r"\s(?:www.)?(\w+.com)"
     matches: list = re.findall(pattern, text)
-    domains = []
+    domains = set()
     if matches:
         for domain in matches:
             if validators.domain(domain):
-                domains.append({"value": domain, "type": "domain"})
+                domains.add(domain)  # Benzersiz URL'leri set'e ekliyoruz
 
-    return domains
+    domain_list = list(domains)  # Set'i liste olarak çeviriyoruz
+    print(domain_list)
+    urls_data = [{"value": domain, "type": "DOMAIN"} for domain in domain_list]
+    return urls_data
