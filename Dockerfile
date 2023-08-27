@@ -1,20 +1,14 @@
-FROM --platform=linux/amd64 python:3.11.4-slim-buster
+FROM python:3.11
 
-ENV PYTHONUNBUFFERED 1
+WORKDIR /app
 
-WORKDIR /usr/src/app
-
-COPY poetry.lock pyproject.toml /usr/src/app/
+COPY poetry.lock pyproject.toml /app/
 
 RUN apt-get update \
-    && apt-get -y install libpq-dev gcc 
+    && apt-get -y install tesseract-ocr 
 
-RUN apt-get -y install ffmpeg libsm6 libxext6
-RUN apt-get -y install tesseract-ocr 
-
-RUN apt-get clean
 
 RUN pip3 install poetry
 RUN poetry install
 
-COPY . /usr/src/app
+COPY . /app

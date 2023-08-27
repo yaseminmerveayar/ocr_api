@@ -12,7 +12,7 @@ async def parse_hash(text: str):
     hashes = set()
     for format in regex_list.keys():
         matches = re.findall(regex_list[format], text)
-        print(matches)
+
         if matches:
             hashes.update(matches)
 

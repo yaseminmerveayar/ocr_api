@@ -7,5 +7,5 @@ async def parse_plate(text: str):
     plates = set()
     if matches:
         plates.update(matches)  # Benzersiz değerleri set'e ekliyoruz
-    print(matches)
+
     return [{"value": plate, "type": "PLATE"} for plate in plates]

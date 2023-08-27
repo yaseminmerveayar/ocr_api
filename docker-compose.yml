@@ -34,12 +34,6 @@ services:
     command: redis-server 
     networks:
       - ocr_network
-    volumes:
-      - cache:/data
-
-volumes:
-  cache:
-    driver: local
 
 networks:
   ocr_network:

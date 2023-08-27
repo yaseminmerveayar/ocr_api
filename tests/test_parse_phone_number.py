@@ -5,7 +5,7 @@ from ocr_app.parsing.phone_number import parse_phone_number
 
 @pytest.mark.asyncio
 async def test_parse_hash():
-    text = """tel no 05378105050 0 555 123 45 67
+    text = """6011779370011770 tel no 05378105050 0 555 123 45 67
     5368456758 invalid olarak 530 984 45 47  
     530 456 3748  +905378293556 0 555 123 45 67"""
 
@@ -19,6 +19,8 @@ async def test_parse_hash():
     ]
 
     result = await parse_phone_number(text)
+
+    print(result)
 
     # aynı sıralamaya getir
     sorted_expected_result = sorted(expected_result, key=lambda x: x["value"])

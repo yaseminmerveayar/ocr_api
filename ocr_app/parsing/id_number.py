@@ -3,8 +3,7 @@ import re
 async def parse_id_number(text: str):
     pattern = r"\b\d{11}\b"
     matches: list = re.findall(pattern, text)
-    print(text)
-    print(matches)
+
     ids = set()
 
     if matches:
@@ -13,7 +12,7 @@ async def parse_id_number(text: str):
                 ids.add(id)
 
     ids_list = list(ids)  # Set'i liste olarak çeviriyoruz
-    print(ids_list)
+
     urls_data = [{"value": id, "type": "ID_NUMBER"} for id in ids_list]
     return urls_data
 
