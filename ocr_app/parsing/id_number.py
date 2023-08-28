@@ -1,6 +1,16 @@
 import re
 
 async def parse_id_number(text: str):
+    """
+    Parse the text with pattern and extract id number
+
+    Args:
+        text : given text
+    
+    Return:
+        List included all valid ids and type
+    """
+        
     pattern = r"\b\d{11}\b"
     matches: list = re.findall(pattern, text)
 

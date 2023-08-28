@@ -14,6 +14,16 @@ import asyncio
 
 
 async def parse_text(text: str):
+    """
+    Call all modules and start async
+
+    Args:
+        text : given text
+    
+    Return:
+        List included all non empty module return values
+    """
+
     tasks = [
         hash.parse_hash(text),
         url.parse_url(text),

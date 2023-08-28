@@ -2,6 +2,15 @@ import re
 
 
 async def parse_credit_card(text: str):
+    """
+    Parse the text with pattern and extract credit card number
+
+    Args:
+        text : given text
+    
+    Return:
+        List included all valid credit card numbers and type
+    """
     pattern = r"(?:\d{4}-){3}\d{4}|\d{16}"
     matches: list = re.findall(pattern, text)
 
@@ -22,6 +31,16 @@ async def parse_credit_card(text: str):
 
 
 async def luhn_check(card_number):
+    """
+    Checks that if the given number is a valid card number or not.
+
+    Args:
+        card_number : given card number
+    
+    Return:
+        Boolean value - if valid return True
+    """
+
     reversed_number = card_number[::-1]
 
     doubled_digits = []

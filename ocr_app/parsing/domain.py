@@ -3,6 +3,16 @@ import validators
 
 
 async def parse_domain(text: str):
+    """
+    Parse the text with pattern and extract domain
+
+    Args:
+        text : given text
+    
+    Return:
+        List included all valid domains and type
+    """
+
     pattern = r"\s(?:www\.)?(\w+\.\w{2,6})"
     matches: list = re.findall(pattern, text)
     domains = set()

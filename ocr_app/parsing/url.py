@@ -3,6 +3,16 @@ import validators
 
 
 async def parse_url(text: str):
+    """
+    Parse the text with pattern and extract url
+
+    Args:
+        text : given text
+    
+    Return:
+        List included all valid urls and type
+    """
+
     pattern = r"https?://[^\s/$.?#].[^\s]*"
     matches: list = re.findall(pattern, text)
     urls = set()

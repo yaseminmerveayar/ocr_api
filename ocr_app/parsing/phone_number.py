@@ -2,6 +2,15 @@ import re
 
 
 async def parse_phone_number(text):
+    """
+    Parse the text with pattern and extract phone number
+
+    Args:
+        text : given text
+    
+    Return:
+        List included all phone numbers and type
+    """
     patterns = [
         r"\b(?:\+?90)?[5-9][0-9]{9}\b",  # Cep telefonu numarası
     ]

@@ -3,6 +3,16 @@ import validators
 
 
 async def parse_email(text: str):
+    """
+    Parse the text with pattern and extract email
+
+    Args:
+        text : given text
+    
+    Return:
+        List included all valid emails and type
+    """
+
     pattern = r"\b[\w.-]+?@\w+?\.\w+?\b"
     matches: list = re.findall(pattern, text)
 

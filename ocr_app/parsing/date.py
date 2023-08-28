@@ -3,6 +3,15 @@ import dateparser
 
 
 async def parse_date(text: str):
+    """
+    Parse the text with pattern and extract date
+
+    Args:
+        text : given text
+    
+    Return:
+        List included all valid dates and type
+    """
     regex_list = {
         "dd/mm/yyyy - Date": r"[\d]{1,2}/[\d]{1,2}/[\d]{4}",
         "dd-mm-yyyy - Date": r"[\d]{1,2}-[\d]{1,2}-[\d]{2}",
