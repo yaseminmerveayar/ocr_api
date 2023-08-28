@@ -1,8 +1,9 @@
 import re
 
+
 async def parse_phone_number(text):
     patterns = [
-        r'(?:(?:\+?90\s?)|0\s?)?(?:(5[0-9]{2})(?:\s|-)?(\d{3})(?:\s|-)?(\d{2})(?:\s|-)?(\d{2}))',  # Cep telefonu numarası
+        r"\b(?:\+?90)?[5-9][0-9]{9}\b",  # Cep telefonu numarası
     ]
     numbers = set()
     for pattern in patterns:
@@ -10,7 +11,7 @@ async def parse_phone_number(text):
 
         if matches:
             for match in matches:
-                formatted_number = ''.join(match).replace(" ", "")
+                formatted_number = "".join(match).replace(" ", "")
 
                 numbers.add(formatted_number)  # Benzersiz değerleri set'e ekliyoruz
 

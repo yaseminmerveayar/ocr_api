@@ -17,10 +17,15 @@ async def parse_id_number(text: str):
     return urls_data
 
 
-
 async def id_check(tc_id: str) -> bool:
     """
     Checks that if the given number is a valid TC ID number or not.
+
+    Args:
+        tc_id : given number
+    
+    Return:
+        Boolean value - if valid return True
     """
     if int(tc_id[0]) < 1 or len(tc_id) != 11:
         return False
@@ -29,7 +34,6 @@ async def id_check(tc_id: str) -> bool:
     if eleventh_digit != int(tc_id[10]):
         return False
 
-    tenth_digit = (sum(map(int, tc_id[:10:2])) * 7-(
-                sum(map(int, tc_id[1:9:2])))) % 10
+    tenth_digit = (sum(map(int, tc_id[:10:2])) * 7 - (sum(map(int, tc_id[1:9:2])))) % 10
 
     return tenth_digit == int(tc_id[9])

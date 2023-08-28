@@ -1,5 +1,6 @@
 import re
 
+
 async def parse_combolist(text: str):
     pattern = r"[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+:[a-zA-Z0-9._-]+"
     matches: list = re.findall(pattern, text)

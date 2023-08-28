@@ -8,14 +8,14 @@ import redis
 import hashlib
 import json
 from ocr_app.logger import logging
+
 router = APIRouter(
     prefix="/api/v1/ocr",
     tags=["ocr"],
     responses={404: {"description": "Not found"}},
 )
 
-redis_client = redis.Redis(host="localhost", port=6379, db=0)
-
+redis_client = redis.Redis(host="cache", port=6379, db=0)
 
 @router.post("/file")
 async def read_user(file: UploadFile = File(...)):
@@ -29,18 +29,18 @@ async def read_user(file: UploadFile = File(...)):
     file_hash = hashlib.sha256(img_bytes).hexdigest()
 
     cache: json = redis_client.get(file_hash)
-    if False:
+    if cache:
         cache_data = json.loads(cache.decode("utf-8"))
-        logging.info('Getting Data From Cache')
+        logging.error("Getting Data From Cache")
         return JSONResponse(content=cache_data, status_code=200)
 
     else:
-        pytesseract_result = pytesseract.image_to_string(img,lang="eng").replace("\n", " ")
-        # cleaned_response: str = (
-        #     pytesseract_result.replace("\n", " ")
-        # )
+        pytesseract_result = pytesseract.image_to_string(img, lang="eng").replace(
+            "\n", " "
+        )
+
         if not pytesseract_result:
-            logging.info('İmage is Not Readable')
+            logging.error("İmage is Not Readable")
             return JSONResponse(content=None, status_code=204)
         else:
             findings: list = await parse.parse_text(pytesseract_result)
@@ -52,7 +52,9 @@ async def read_user(file: UploadFile = File(...)):
 
             json_result = json.dumps(result)
             redis_client.set(file_hash, json_result, ex=1 * 3600)
-            logging.info('Returning Data After Parsing')
+
+            logging.error("Returning Data After Parsing")
+
             return JSONResponse(content=result, status_code=200)
 
 

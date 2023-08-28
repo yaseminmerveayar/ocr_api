@@ -9,7 +9,6 @@ async def parse_url(text: str):
     if matches:
         for url in matches:
             if validators.url(url):
-
                 urls.add(url)  # Benzersiz URL'leri set'e ekliyoruz
 
     urls_list = list(urls)  # Set'i liste olarak çeviriyoruz

@@ -6,18 +6,20 @@ from ocr_app.parsing.domain import parse_domain
 @pytest.mark.asyncio
 async def test_credit_card_parser():
     test_text = """
-    Merhaba, bugün OpenAI'nin resmi web sitesi 
+    Merhaba, yasemin@hotmail.com bugün OpenAI'nin resmi web sitesi 
     olan www.openai.com/ adresini ziyaret 
-    edebilirsiniz. Ayrıca, teknoloji haberleri 
+    edebilirsiniz. Ayrıca, https://t.me/foo teknoloji haberleri 
     için exampletechnews.com sitesi 
     de oldukça popüler. Eğer rehberlik hizmetlerine 
     ihtiyacınız varsa, https://www.guidancehelpcenter.org/ 
-    adresine göz atabilirsiniz.
-    """
+    adresine göz atabilirsiniz foo.com.
+    ( www.example.com )"""
 
     expected_result = [
         {"value": "openai.com", "type": "DOMAIN"},
         {"value": "exampletechnews.com", "type": "DOMAIN"},
+        {"value": "foo.com", "type": "DOMAIN"},
+        {"value": "example.com", "type": "DOMAIN"},
     ]
 
     result = await parse_domain(test_text)

@@ -18,7 +18,7 @@ async def parse_date(text: str):
             for date in matches:
                 parsed_date = dateparser.parse(date)
                 if parsed_date is not None:
-                    dates.add(date)  # Benzersiz değerleri set'e ekliyoruz
+                    dates.add(str(parsed_date))  # Benzersiz değerleri set'e ekliyoruz
 
     urls_data = [
         {"value": date, "type": "DATE"} for date in dates

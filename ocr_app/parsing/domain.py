@@ -3,7 +3,7 @@ import validators
 
 
 async def parse_domain(text: str):
-    pattern = r"^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$"
+    pattern = r"\s(?:www\.)?(\w+\.\w{2,6})"
     matches: list = re.findall(pattern, text)
     domains = set()
     if matches:
